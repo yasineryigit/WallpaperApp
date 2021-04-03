@@ -35,12 +35,16 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textViewUsername.setText(photoList.get(position).getUser().getUsername());
         holder.textViewLikes.setText(photoList.get(position).getLikes().toString() +" Likes");
-        //glide
-        Glide.with(holder.imageView.getContext())
+        //Photo
+        Glide.with(holder.imageViewPhoto.getContext())
                 .load(photoList.get(position).getUrls().getSmall())
                 .centerCrop()
-                .into(holder.imageView);
-
+                .into(holder.imageViewPhoto);
+        //Profile Picture
+        Glide.with(holder.imageViewProfilePicture.getContext())
+                .load(photoList.get(position).getUser().getProfileImage().getSmall())
+                .centerCrop()
+                .into(holder.imageViewProfilePicture);
 
     }
 
@@ -50,13 +54,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        ImageView imageViewPhoto,imageViewProfilePicture;
         TextView textViewUsername,textViewLikes;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageViewPhoto = itemView.findViewById(R.id.imageViewPhoto);
             textViewUsername = itemView.findViewById(R.id.text_view_username);
             textViewLikes = itemView.findViewById(R.id.text_view_likes);
+            imageViewProfilePicture=itemView.findViewById(R.id.image_view_profile_picture);
         }
     }
 
