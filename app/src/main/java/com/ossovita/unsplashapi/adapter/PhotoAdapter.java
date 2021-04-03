@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,12 +33,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: cevap bekliyor");
+        holder.textViewUsername.setText(photoList.get(position).getUser().getUsername());
+        holder.textViewLikes.setText(photoList.get(position).getLikes().toString() +" Likes");
         //glide
         Glide.with(holder.imageView.getContext())
-                .load(photoList.get(position).getUrls().getFull())
+                .load(photoList.get(position).getUrls().getSmall())
                 .centerCrop()
                 .into(holder.imageView);
+
 
     }
 
@@ -48,10 +51,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-
+        TextView textViewUsername,textViewLikes;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
+            textViewUsername = itemView.findViewById(R.id.text_view_username);
+            textViewLikes = itemView.findViewById(R.id.text_view_likes);
         }
     }
 

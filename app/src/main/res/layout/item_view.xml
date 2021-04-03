@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+    android:paddingBottom="15dp"
     android:layout_height="wrap_content">
 
+    <TextView
+        android:id="@+id/text_view_username"
+        android:layout_width="410dp"
+        android:layout_height="26dp"
+        android:textColor="@color/white"
+        android:text="Mike"
+        android:paddingLeft="10dp" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.041"
         tools:srcCompat="@tools:sample/avatars" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/text_view_likes"
+        android:layout_width="410dp"
+        android:layout_height="26dp"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:text="121 Likes"
+        />
+</LinearLayout>
