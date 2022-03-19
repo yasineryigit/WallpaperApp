@@ -32,7 +32,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     private List<Photo> photoList;
     private Context context;
     private MutableLiveData<String> searchKey = new MutableLiveData<>();
-    MainActivityViewModel viewModel;
 
     public PhotoAdapter(List<Photo> photoList, Context context) {
         this.context = context;

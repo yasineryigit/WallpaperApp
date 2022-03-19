@@ -1,6 +1,7 @@
-plugins {
-    id 'com.android.application'
-}
+
+apply plugin: 'com.android.application'
+apply plugin: 'dagger.hilt.android.plugin'
+
 
 android {
     compileSdkVersion 30
@@ -47,4 +48,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'com.google.dagger:hilt-android:2.41'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.41'
 }

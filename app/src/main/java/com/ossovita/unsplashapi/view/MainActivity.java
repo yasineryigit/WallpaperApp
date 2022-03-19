@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +22,12 @@ import com.ossovita.unsplashapi.viewmodel.MainActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.android.HiltAndroidApp;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PhotoAdapter(photoList, getApplicationContext());
@@ -67,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(String s) {
                 viewModel.setSearchKey(s);
+                Objects.requireNonNull(getSupportActionBar()).setTitle(s);
             }
         });
-
 
     }
 

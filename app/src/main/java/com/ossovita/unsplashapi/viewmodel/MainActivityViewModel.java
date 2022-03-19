@@ -1,11 +1,13 @@
 package com.ossovita.unsplashapi.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.ossovita.unsplashapi.api.UnsplashApi;
 import com.ossovita.unsplashapi.api.UnsplashService;
@@ -17,23 +19,33 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
-public class MainActivityViewModel extends AndroidViewModel {
+@HiltViewModel
+public class MainActivityViewModel extends ViewModel {
 
     private static final String TAG = "MainActivityViewModel";
     private MutableLiveData<List<Photo>> photoList;
-    private MutableLiveData<String> searchKey = new MutableLiveData<>();
+    private final MutableLiveData<String> searchKey = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    private CustomSharedPreferences preferences;
+    Retrofit retrofit;
+    CustomSharedPreferences preferences;
+    Context context;
     UnsplashApi unsplashApi;
 
-    public MainActivityViewModel(@NonNull Application application) {
-        super(application);
-        preferences = CustomSharedPreferences.getInstance(application.getApplicationContext());
-        unsplashApi = UnsplashService.getInstance().create(UnsplashApi.class);
+    @Inject
+    public MainActivityViewModel(@ApplicationContext Context context, Retrofit retrofit, CustomSharedPreferences preferences) {
+        this.context=context;
+        this.retrofit = retrofit;
+        this.preferences=preferences;
+
     }
 
     public MutableLiveData<List<Photo>> getPhotoList() {
@@ -44,17 +56,9 @@ public class MainActivityViewModel extends AndroidViewModel {
         return photoList;
     }
 
-    public MutableLiveData<String> getSearchKey() {
-        return searchKey;
-    }
-
-    public void setSearchKey(String key) {
-        preferences.setSearchTerm(key);
-        searchKey.setValue(key);
-        loadPhotos(key);
-    }
 
     private void loadPhotos(String searchKey) {
+        unsplashApi = retrofit.create(UnsplashApi.class);
         isLoading.setValue(true);
         unsplashApi.getPhotos(searchKey, 100, "6qcJq0xrIOg45maYtJsGfP9NtekiatBjX9gikdu4zgQ").enqueue(new Callback<SearchResult>() {
             @Override
@@ -84,6 +88,16 @@ public class MainActivityViewModel extends AndroidViewModel {
                 return t2.getLikes().compareTo(t1.getLikes());
             }
         });
+    }
+
+    public MutableLiveData<String> getSearchKey() {
+        return searchKey;
+    }
+
+    public void setSearchKey(String key) {
+        preferences.setSearchTerm(key);
+        searchKey.setValue(key);
+        loadPhotos(key);
     }
 
     public MutableLiveData<Boolean> getIsLoading() {
