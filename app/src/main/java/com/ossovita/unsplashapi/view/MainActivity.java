@@ -1,20 +1,15 @@
 package com.ossovita.unsplashapi.view;
 
-import android.app.DownloadManager;
+import android.app.WallpaperManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.CookieManager;
-import android.webkit.URLUtil;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,20 +24,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ossovita.unsplashapi.R;
 import com.ossovita.unsplashapi.adapter.PhotoAdapter;
 import com.ossovita.unsplashapi.model.Photo;
-import com.ossovita.unsplashapi.util.DownloadPhoto;
 import com.ossovita.unsplashapi.viewmodel.MainActivityViewModel;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import okhttp3.Cookie;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
@@ -134,31 +123,37 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==101){
-            //Toast.makeText(this, "Download", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "onContextItemSelected: download: " +photoAdapter.getPhotoAt(item.getGroupId()).getUrls().getFull());
-            //new DownloadPhoto(this).execute(photoAdapter.getPhotoAt(item.getGroupId()).getUrls().getFull());
-            downloadImage(photoAdapter.getPhotoAt(item.getGroupId()).getUrls().getFull());
+        if (item.getItemId() == 101) {
+            Toast.makeText(MainActivity.this, "Changing Wallpaper..", Toast.LENGTH_LONG).show();
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        URL url = new URL(photoAdapter.getPhotoAt(item.getGroupId()).getUrls().getFull());
+                        Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                        WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
+                        wallpaperManager.setBitmap(image);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+
 
             return true;
         }
+
+        if (item.getItemId() == 102) {
+            //Toast.makeText(this, "Download", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "onContextItemSelected: download: " + photoAdapter.getPhotoAt(item.getGroupId()).getUrls().getFull());
+            //new DownloadPhoto(this).execute(photoAdapter.getPhotoAt(item.getGroupId()).getUrls().getFull());
+            viewModel.downloadImage(photoAdapter.getPhotoAt(item.getGroupId()).getUrls().getFull());
+            Toast.makeText(this, "Downloading Started.", Toast.LENGTH_SHORT).show();
+
+            return true;
+        }
+
         return false;
-    }
-
-    private void downloadImage(String url) {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        String title = URLUtil.guessFileName(url,null,null);
-        request.setTitle(title);
-        request.setDescription("Downloading File please wait...");
-        String cookie = CookieManager.getInstance().getCookie(url);
-        request.addRequestHeader("cookie",cookie);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DCIM,""+System.currentTimeMillis()+".jpg");
-
-        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        downloadManager.enqueue(request);
-
-        Toast.makeText(this, "Downloading Started.", Toast.LENGTH_SHORT).show();
     }
 
 

@@ -1,6 +1,7 @@
 package com.ossovita.unsplashapi.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -9,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,11 +17,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.ossovita.unsplashapi.R;
 import com.ossovita.unsplashapi.model.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder> implements Filterable {
     private static final String TAG = "PhotoAdapter";
@@ -111,8 +113,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-                contextMenu.setHeaderTitle("Select Operation");
-                contextMenu.add(getAdapterPosition(), 101, 0, "Download");
+            contextMenu.setHeaderTitle("Select Operation");
+            contextMenu.add(getAdapterPosition(), 101, 0, "Make Wallpaper");
+            contextMenu.add(getAdapterPosition(), 102, 0, "Download");
+
+
+
         }
     }
 
@@ -132,6 +138,5 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     public Photo getPhotoAt(int position) {
         return photoList.get(position);
     }
-
 
 }

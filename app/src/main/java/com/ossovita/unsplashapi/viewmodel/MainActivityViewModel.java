@@ -1,7 +1,13 @@
 package com.ossovita.unsplashapi.viewmodel;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.URLUtil;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -75,6 +81,21 @@ public class MainActivityViewModel extends ViewModel {
                 Log.d(TAG, "onFailure: hata: " + t.getMessage());
             }
         });
+    }
+
+    public void downloadImage(String url) {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        String title = URLUtil.guessFileName(url,null,null);
+        request.setTitle(title);
+        request.setDescription("Downloading File please wait...");
+        String cookie = CookieManager.getInstance().getCookie(url);
+        request.addRequestHeader("cookie",cookie);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DCIM,""+System.currentTimeMillis()+".jpg");
+
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        downloadManager.enqueue(request);
+
     }
 
     private void sortByLikes(List<Photo> photoList) {
