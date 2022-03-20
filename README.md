@@ -5,8 +5,8 @@ Fetching Photos from Unsplash | Android | Java
 ## Screenshoot
 
 <img src="https://github.com/yasineryigit/UnsplashApi/blob/master/screenshoot/1.png" width="250" height="539" />
-<img src="https://github.com/yasineryigit/UnsplashApi/blob/master/screenshoot/1.png" width="250" height="539" />
-<img src="https://github.com/yasineryigit/UnsplashApi/blob/master/screenshoot/1.png" width="250" height="539" />
+<img src="https://github.com/yasineryigit/UnsplashApi/blob/master/screenshoot/2.png" width="250" height="539" />
+<img src="https://github.com/yasineryigit/UnsplashApi/blob/master/screenshoot/3.png" width="250" height="539" />
 
 
 
