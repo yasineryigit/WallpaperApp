@@ -1,28 +1,24 @@
 package com.ossovita.unsplashapi.adapter;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ossovita.unsplashapi.R;
 import com.ossovita.unsplashapi.model.Photo;
-import com.ossovita.unsplashapi.viewmodel.MainActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +96,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         }
     };
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         ImageView imageViewPhoto, imageViewProfilePicture;
         TextView textViewUsername, textViewLikes;
 
@@ -110,6 +106,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
             textViewUsername = itemView.findViewById(R.id.text_view_username);
             textViewLikes = itemView.findViewById(R.id.text_view_likes);
             imageViewProfilePicture = itemView.findViewById(R.id.image_view_profile_picture);
+            imageViewPhoto.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+                contextMenu.setHeaderTitle("Select Operation");
+                contextMenu.add(getAdapterPosition(), 101, 0, "Download");
         }
     }
 
@@ -126,6 +129,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         notifyDataSetChanged();
     }
 
+    public Photo getPhotoAt(int position) {
+        return photoList.get(position);
+    }
 
 
 }

@@ -1,16 +1,12 @@
 package com.ossovita.unsplashapi.viewmodel;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ossovita.unsplashapi.api.UnsplashApi;
-import com.ossovita.unsplashapi.api.UnsplashService;
 import com.ossovita.unsplashapi.db.CustomSharedPreferences;
 import com.ossovita.unsplashapi.model.Photo;
 import com.ossovita.unsplashapi.model.SearchResult;
@@ -33,7 +29,7 @@ public class MainActivityViewModel extends ViewModel {
 
     private static final String TAG = "MainActivityViewModel";
     private MutableLiveData<List<Photo>> photoList;
-    private final MutableLiveData<String> searchKey = new MutableLiveData<>();
+    private MutableLiveData<String> searchKey;
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     Retrofit retrofit;
     CustomSharedPreferences preferences;
@@ -42,10 +38,10 @@ public class MainActivityViewModel extends ViewModel {
 
     @Inject
     public MainActivityViewModel(@ApplicationContext Context context, Retrofit retrofit, CustomSharedPreferences preferences) {
-        this.context=context;
+        this.context = context;
         this.retrofit = retrofit;
-        this.preferences=preferences;
-
+        this.preferences = preferences;
+        this.searchKey = new MutableLiveData<>(this.preferences.getSearchTerm());
     }
 
     public MutableLiveData<List<Photo>> getPhotoList() {
