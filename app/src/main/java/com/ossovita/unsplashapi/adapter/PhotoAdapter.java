@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -111,13 +112,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
             imageViewPhoto.setOnCreateContextMenuListener(this);
         }
 
+
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+
             contextMenu.setHeaderTitle("Select Operation");
             contextMenu.add(getAdapterPosition(), 101, 0, "Make Wallpaper");
             contextMenu.add(getAdapterPosition(), 102, 0, "Download");
-
-
 
         }
     }

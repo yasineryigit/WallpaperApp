@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(String s) {
                 viewModel.setSearchKey(s);
+                Objects.requireNonNull(recyclerView.getLayoutManager()).scrollToPosition(0);//scroll to top after new search
                 Objects.requireNonNull(getSupportActionBar()).setTitle(s);
             }
         });

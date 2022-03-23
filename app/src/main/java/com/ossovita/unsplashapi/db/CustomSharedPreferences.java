@@ -9,7 +9,7 @@ public class CustomSharedPreferences {
 
     public static CustomSharedPreferences getInstance(Context context) {
         instance = new CustomSharedPreferences();
-        pref = context.getSharedPreferences("stopwatch", Context.MODE_PRIVATE);
+        pref = context.getSharedPreferences("wallpaper", Context.MODE_PRIVATE);
         return instance;
     }
 
